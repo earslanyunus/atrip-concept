@@ -4,6 +4,9 @@
 
 @layer components {
   .btn-primary {
-    @apply px-6 py-3 bg-[#588B8B] rounded-lg flex gap-1 items-center justify-center text-white;
+    @apply px-6 py-3 bg-[#588B8B] rounded-lg flex gap-1 items-center justify-center text-white transition-colors;
+  }
+  .btn-primary:hover{
+    @apply bg-[#3b5f5f]
   }
 }
