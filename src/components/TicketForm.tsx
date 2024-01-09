@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from "react"
-import { AnimatePresence, motion, animate } from "framer-motion"
-import clsx from "clsx"
+
+import AnimatedSwitch from "./AnimatedSwitch"
 import ComboBox from "./ComboBox"
+import DateInput from "./DateInput"
+
 
 
 
@@ -128,22 +129,26 @@ const locationSample = [
 
 const TicketForm = ({ variant }: { variant: TripType }) => {
 
-   
+
 
 
 
     return (
         <form className="">
-            {variant === 'plane' &&(
+            {variant === 'plane' && (
                 <div id="locationInput" className="">
-               
-                <div className="flex gap-4 ">
-                    <ComboBox labelName="From" listElements={locationSample} />
-                    <ComboBox labelName="To" listElements={locationSample} />
+
+                    <div className="flex gap-4 ">
+                        <ComboBox labelName="From" listElements={locationSample} />
+                        <ComboBox labelName="To" listElements={locationSample} />
+
+                    </div>
+                    <div className="mt-4">
+                        <DateInput/>
+                    </div>
                 </div>
-            </div>
             )}
-            
+
         </form >
     )
 }

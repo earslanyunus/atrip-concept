@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -9,4 +10,7 @@
   .btn-primary:hover{
     @apply bg-[#3b5f5f]
   }
+ 
+  
+
 }
