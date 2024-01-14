@@ -1,6 +1,6 @@
 
 import AnimatedSwitch from "./AnimatedSwitch"
-import ComboBox from "./ComboBox"
+import ComboBox from "./LocationInput"
 import DateInput from "./DateInput"
 
 
@@ -142,6 +142,10 @@ const TicketForm = ({ variant }: { variant: TripType }) => {
                         <ComboBox   labelText="From" placeholder="Location,Airport,City"/>
                         <ComboBox   labelText="To" placeholder="Location,Airport,City"/>
 
+                    </div>
+                    <div className="flex gap-4 mt-3">
+                        <DateInput labelText="Date"/>
+                        <ComboBox labelText="Traveller, Cabin" placeholder="1 Person/Economy"/>
                     </div>
                     
                 </div>

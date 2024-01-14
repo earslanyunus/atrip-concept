@@ -38,22 +38,34 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean,
-  labelText:string
+  labelText?:string
 
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false,labelText, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"
-    return (
-      <div className='flex flex-col gap-1 w-full'>
-      <span  className="text-slate-500">{labelText}</span>
+    if (labelText) {
+      return(
+         <div className='flex flex-col gap-1 w-full'>
+       <span  className="text-slate-500">{labelText}</span>
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
         {...props}
       />
       </div>
+      )
+    }
+    return (
+        
+      
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        {...props}
+      />
+      
     )
   }
 )
