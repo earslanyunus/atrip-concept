@@ -139,13 +139,11 @@ const TicketForm = ({ variant }: { variant: TripType }) => {
                 <div id="locationInput" className="">
 
                     <div className="flex gap-4 ">
-                        <ComboBox labelName="From" listElements={locationSample} />
-                        <ComboBox labelName="To" listElements={locationSample} />
+                        <ComboBox   labelText="From" placeholder="Location,Airport,City"/>
+                        <ComboBox   labelText="To" placeholder="Location,Airport,City"/>
 
                     </div>
-                    <div className="mt-4">
-                        <DateInput/>
-                    </div>
+                    
                 </div>
             )}
 

@@ -1,79 +1,96 @@
+"use client";
 
-import {AnimatePresence, motion} from 'framer-motion'
-import { useState, useEffect } from 'react'
-import LocationIcon from './icons/Location'
-const variants = {
-    open: {
-        opacity: 1,
-        display: 'block',
-        height: 'auto',
-        transition: {
-            type: 'spring',
-            duration: 0.8,
-            bounce: 0.5
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command";
+import {Button} from '@/components/ui/button'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { Check } from "lucide-react";
+import * as React from "react";
+import {RiMapPin2Line} from '@remixicon/react'
+import clsx from "clsx";
 
+const frameworks = [
+  {
+    value: "next.js",
+    label: "Next.js",
+  },
+  {
+    value: "sveltekit",
+    label: "SvelteKit",
+  },
+  {
+    value: "nuxt.js",
+    label: "Nuxt.js",
+  },
+  {
+    value: "remix",
+    label: "Remix",
+  },
+  {
+    value: "astro",
+    label: "Astro",
+  },
+];
 
-        }
+export default function ComboboxDemo({ labelText,placeholder }: { labelText: string,placeholder:string }) {
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState("");
 
-    },
-    closed: {
-        height: '0px',
-        opacity: 0,
-        transition: {
-            type: 'spring',
-            duration: 0.3,
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          labelText={labelText}
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          className={clsx("w-full justify-start gap-3 py-6 text-slate-400 ",value !== "" &&"text-slate-700")}
+        >
+                      <RiMapPin2Line className="fill-slate-500"/>
 
-        },
-        transitionEnd: {
-            display: 'none'
-        }
-
-    }
-}
-
-type ComboBoxProps = {
-    labelName: string;
-    listElements: { name: string; code: string }[]
-}  
-const ComboBox = ({listElements,labelName}: ComboBoxProps) => {
-   
-    
-    
-    const [inputValue, setInputValue] = useState('')
-    const [isOpen, setIsOpen] = useState<Boolean>(false)
-
-    const [locations, setLocations] = useState<{ name: string; code: string }[]>(listElements);
-
-    useEffect(() => {
-        setLocations(listElements.filter((location) => location.name.toLowerCase().includes(inputValue.toLowerCase())))
-
-
-
-
-
-
-
-    }, [inputValue, listElements])
- const locationClickHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        setInputValue(e.currentTarget.textContent || '')
-    }
-    return(
-        <div className="flex flex-col relative flex-1">
-        <label htmlFor={labelName} className='text-slate-500'>{labelName}</label>
-        <div className='relative'>
-        <input className="p-4 border rounded-lg pl-12 w-full"   type="text" name="" id={labelName} value={inputValue} onChange={(e) => { setInputValue(e.target.value) }} onFocus={() => setIsOpen(true)} onBlur={() => setTimeout(() => { setIsOpen(false) }, 100)} />
-        <span className='absolute left-2 top-1/2 -translate-y-1/2'><LocationIcon/></span>
-        </div>
-        <motion.div style={{ overflow: "scroll" }} animate={isOpen === true ? 'open' : 'closed'} initial={{ display: 'none', height: '0px' }} variants={variants} className='border bg-white  absolute rounded shadow-sm top-[86px] w-full  z-10 max-h-72'  >
-            <AnimatePresence >
-            {locations.map((location, index) => (
-                <motion.div  initial={{ opacity:0 }} animate={{ opacity:1 }} whileHover={{scale:1.02}}  exit={{opacity:0}} transition={{duration:0.2,type:'spring'}} key={location.code} onClick={locationClickHandler} className=" hover:bg-slate-100 m-4 cursor-pointer    p-4 rounded">{location.name}</motion.div>
-
+          {value
+            ? frameworks.find((framework) => framework.value === value)?.label
+            : `${placeholder}`}
+        </Button>
+        
+      </PopoverTrigger>
+      <PopoverContent className="w-[--radix-popover-trigger-width] p-0 ">
+        <Command className="">
+          <CommandInput placeholder="Search framework..." />
+          <CommandEmpty>No framework found.</CommandEmpty>
+          <CommandGroup>
+            {frameworks.map((framework) => (
+              <CommandItem
+                className="cursor-pointer py-3 hover:scale-105 transition-transform ease-out"
+                key={framework.value}
+                value={framework.value}
+                onSelect={(currentValue) => {
+                  setValue(currentValue === value ? "" : currentValue);
+                  setOpen(false);
+                }}
+              >
+                <Check
+                  className={cn(
+                    "mr-2 h-4 w-4 ",
+                    value === framework.value ? "opacity-100" : "opacity-0"
+                  )}
+                />
+                {framework.label}
+              </CommandItem>
             ))}
-            </AnimatePresence>
-        </motion.div>
-
-            </div>
-    )
+          </CommandGroup>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  );
 }
-export default ComboBox
