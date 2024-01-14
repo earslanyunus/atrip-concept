@@ -1,39 +1,21 @@
 "use client";
+import { Transition } from '@headlessui/react'
 
-import * as React from "react";
-import {
-  addYears,
-  endOfYear,
-  format,
-  getMonth,
-  getYear,
-  startOfYear,
-} from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
+import { Label } from "@/components/ui/label";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  ActiveModifiers,
-  DateRange,
-  DayPickerContext,
-  DayPickerContextValue,
-  DayPickerDefaultProps,
-  DayPickerMultipleProps,
-  DayPickerRangeProps,
-  DayPickerSingleProps,
-  DaySelectionMode,
-  Footer,
-  isDateRange,
-} from "react-day-picker";
+import { Switch } from "@/components/ui/switch";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
 import { tr } from "date-fns/locale";
+import { Calendar as CalendarIcon } from "lucide-react";
+import * as React from "react";
+import { DateRange } from "react-day-picker";
 export default function DatePickerDemo({ labelText }: { labelText: string }) {
   const [tripDateRange, setDateRange] = React.useState<DateRange | undefined>(
     undefined
@@ -87,8 +69,10 @@ export default function DatePickerDemo({ labelText }: { labelText: string }) {
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
         <div>
+        
+            
           {mode === "range" && (
-            <Calendar
+             <Calendar
               initialFocus
               numberOfMonths={2}
               mode={"range"}
@@ -105,7 +89,6 @@ export default function DatePickerDemo({ labelText }: { labelText: string }) {
               onSelect={setDate}
             />
           )}
-
           <div className="flex items-center space-x-2 p-3">
             <Switch
               id="airplane-mode"
