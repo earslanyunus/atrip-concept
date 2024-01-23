@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Select,
   SelectContent,
@@ -18,6 +19,7 @@ import { RiUserLine } from "@remixicon/react";
 import clsx from "clsx";
 import * as React from "react";
 import PassengerSelect from "./PassengerSelect";
+import usePersonStore from "@/store/data";
 
 const cabinClasses = [
   {
@@ -43,6 +45,9 @@ export default function PassengerInput({
 }) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("economy");
+  const firstname = usePersonStore((state)=>state.firstName)
+  
+
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -67,8 +72,9 @@ export default function PassengerInput({
       </PopoverTrigger>
       <PopoverContent className="w-[--radix-popover-trigger-width] p-5  ">
         <div className="flex flex-col items-center">
+        
           <div className="flex flex-col w-full gap-2">
-            <Label htmlFor="my-select"> Cabin select</Label>
+            <Label htmlFor="my-select"> Cabin select </Label>
             <Select value={value} onValueChange={setValue}>
               <SelectTrigger id="my-select" className="w-full">
                 <SelectValue />
@@ -84,8 +90,17 @@ export default function PassengerInput({
               </SelectContent>
             </Select>
           </div>
-          <div className="flex flex-col gap-6 w-full">
-                  <PassengerSelect/>
+          <div className="flex flex-col gap-6 w-full mt-6">
+                  <h1>{firstname}</h1>
+                  <div className="flex">
+                  <PassengerSelect label="Adult" labelId='adult-passenger-select' defaultVal={1}/>
+                  <PassengerSelect label="Student" labelId='student-passenger-select' defaultVal={0}/>
+                  </div>
+                  <div className="flex">
+                  <PassengerSelect label="Child" labelId='child-passenger-select' defaultVal={0}/>
+
+                  <PassengerSelect label="Baby" labelId='baby-passenger-select' defaultVal={0}/>
+                  </div>
           </div>
         </div>
       </PopoverContent>

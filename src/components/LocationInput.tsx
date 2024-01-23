@@ -42,7 +42,7 @@ const frameworks = [
   },
 ];
 
-export default function ComboboxDemo({ labelText,placeholder }: { labelText: string,placeholder:string }) {
+export default function ComboboxDemo({ labelText,placeholder,formaction }: { labelText: string,placeholder:string,formaction:any}) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
 
@@ -76,6 +76,7 @@ export default function ComboboxDemo({ labelText,placeholder }: { labelText: str
                 value={framework.value}
                 onSelect={(currentValue) => {
                   setValue(currentValue === value ? "" : currentValue);
+                  formaction("framework",currentValue)
                   setOpen(false);
                 }}
               >

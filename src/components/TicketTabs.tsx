@@ -5,8 +5,8 @@ import Train from "@/components/icons/Train";
 import Car from "@/components/icons/Car";
 import * as Tabs from '@radix-ui/react-tabs';
 import { useState } from "react";
-import TicketForm from "./TicketForm";
 import { motion } from "framer-motion";
+import PlaneForm from "./PlaneForm";
 
 
 
@@ -58,10 +58,13 @@ const TicketTabs = () => {
           )}
           </Tabs.Trigger>
         </Tabs.List>
-        <Tabs.Content value="tab-plane" ><TicketForm variant="plane" /></Tabs.Content>
-        <Tabs.Content value="tab-bus" > <TicketForm variant="bus" /></Tabs.Content>
-        <Tabs.Content value="tab-train" ><TicketForm variant="train" /></Tabs.Content>
-        <Tabs.Content value="tab-car" ><TicketForm variant="car" /></Tabs.Content>
+        <Tabs.Content value="tab-plane" >
+          <PlaneForm/>
+         
+          </Tabs.Content>
+        <Tabs.Content value="tab-bus" > </Tabs.Content>
+        <Tabs.Content value="tab-train" ></Tabs.Content>
+        <Tabs.Content value="tab-car" ></Tabs.Content>
       </Tabs.Root>
     </div>
   )
