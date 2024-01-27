@@ -18,6 +18,7 @@ import { Check } from "lucide-react";
 import * as React from "react";
 import {RiMapPin2Line} from '@remixicon/react'
 import clsx from "clsx";
+import { unknown } from "zod";
 
 const frameworks = [
   {
@@ -45,6 +46,9 @@ const frameworks = [
 export default function ComboboxDemo({ labelText,placeholder,formaction }: { labelText: string,placeholder:string,formaction:any}) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
+  const schemaName  = labelText.toLowerCase()
+ 
+    
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -75,8 +79,8 @@ export default function ComboboxDemo({ labelText,placeholder,formaction }: { lab
                 key={framework.value}
                 value={framework.value}
                 onSelect={(currentValue) => {
-                  setValue(currentValue === value ? "" : currentValue);
-                  formaction("framework",currentValue)
+                  setValue(currentValue);
+                  formaction(schemaName,currentValue)
                   setOpen(false);
                 }}
               >

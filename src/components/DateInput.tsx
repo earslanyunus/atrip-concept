@@ -16,13 +16,24 @@ import { tr } from "date-fns/locale";
 import { Calendar as CalendarIcon } from "lucide-react";
 import * as React from "react";
 import { DateRange } from "react-day-picker";
-export default function DatePickerDemo({ labelText }: { labelText: string }) {
+export default function DatePickerDemo({ labelText, formaction }: { labelText: string,formaction:any }) {
   const [tripDateRange, setDateRange] = React.useState<DateRange | undefined>(
     undefined
   );
   const [tripDate, setDate] = React.useState<Date | undefined>(undefined);
   const [checked, setChecked] = React.useState<boolean>(false);
   const [mode, setMode] = React.useState<"range" | "single">("range");
+    React.useEffect(()=>{
+    if(tripDateRange !== undefined){
+      formaction('date',tripDateRange);
+    }
+    if(tripDate !== undefined){
+      formaction('date',tripDate);
+    }
+
+
+    },[tripDateRange,tripDate,formaction])
+
 
   const checkedHandle = (isChecked: boolean) => {
     setChecked(isChecked);
@@ -42,7 +53,7 @@ export default function DatePickerDemo({ labelText }: { labelText: string }) {
           labelText={labelText}
           variant={"outline"}
           className={cn(
-            "flex-1 justify-start text-left font-normal",
+            "flex-1 justify-start text-left font-normal py-3",
             !tripDate && "text-muted-foreground"
           )}
         >
