@@ -26,9 +26,11 @@ export default function DatePickerDemo({ labelText, formaction }: { labelText: s
     React.useEffect(()=>{
     if(tripDateRange !== undefined){
       formaction('date',tripDateRange);
-    }
-    if(tripDate !== undefined){
+    }else if(tripDate !== undefined){
       formaction('date',tripDate);
+    }else{
+      formaction('date',undefined);
+
     }
 
 

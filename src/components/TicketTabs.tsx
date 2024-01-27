@@ -14,9 +14,9 @@ const TicketTabs = () => {
   const [active, setActive] = useState('tab-plane')
 
   return (
-    <div className="p-12 bg-white rounded-lg shadow-sm w-[60vw] min-h-[400px]">
+    <div className="p-12 bg-white rounded-lg shadow-sm w-[90vw] lg:w-[70vw] min-h-[400px]">
       <Tabs.Root value={active} onValueChange={(e) => setActive(e)}>
-        <Tabs.List className="border border-slate-200 rounded-lg p-2 flex justify-between gap-3 mb-10">
+        <Tabs.List className="border border-slate-200 rounded-lg p-2 flex justify-between flex-col md:flex-row gap-3 mb-10">
           <Tabs.Trigger value="tab-plane" className="relative  data-[state=active]:text-[#554138]   py-3 px-6 rounded-lg font-semibold hover:bg-slate-200 text-slate-400 transition-colors flex gap-1 w-full justify-center items-center"><Plane isActive={active} /><span className="z-10">Plane</span> 
           {active === 'tab-plane' && (
             <motion.span

@@ -53,7 +53,11 @@ const FormSchema = z.object({
   to: z.string({
     required_error: "Please select to destination.",
   }),
-  date: z.union([z.date(), z.object({ from: z.date(), to: z.date() })]),
+  date: z.union([z.date({
+    required_error: "Please select date.",
+  }), z.object({ from: z.date(), to: z.date() })],{
+    required_error: "Please select date.",
+  }),
   passenger: z.object({
     cabin: z.string(),
     adult: z.number(),
@@ -76,14 +80,14 @@ export default function ComboboxForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className=" grid grid-cols-2 gap-x-8"
+        className="grid grid-cols-1 lg:grid-cols-2    gap-x-8"
       >
         <FormField
           control={form.control}
           name="from"
           render={({ field }) => {
             return (
-              <FormItem className="">
+              <FormItem >
                 <FormControl>
                   <ComboboxDemo
                     labelText="From"
@@ -143,7 +147,7 @@ export default function ComboboxForm() {
             );
           }}
         />
-        <Button className="col-span-2 mt-6" type="submit">
+        <Button className=" mt-6 col-span-1 lg:col-span-2" type="submit">
           Submit
         </Button>
       </form>

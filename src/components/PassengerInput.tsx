@@ -114,8 +114,12 @@ export default function PassengerInput({
                     disabled={adultCount < 1}
                     className="px-2"
                     size="icon"
-                    onClick={() =>
-                      adultCount < 1 ? "" : setAdultCount(adultCount - 1)
+                    onClick={() =>{
+                      if (studentCount >0) {
+                        adultCount < 1 ? "" : setAdultCount(adultCount - 1)
+
+                      }
+                    }
                     }
                   >
                     <RiSubtractLine className="h-4 w-4" />
@@ -149,12 +153,14 @@ export default function PassengerInput({
                 <div className="flex gap-2">
                   <Button
                     variant="outline"
-                    disabled={studentCount < 1}
+                    disabled={studentCount < 1 }
                     className="px-2"
                     size="icon"
-                    onClick={() =>
+                    onClick={() =>{
+                      if(adultCount < 1 && studentCount === 1) return
+                    
                       studentCount < 1 ? "" : setStudentCount(studentCount - 1)
-                    }
+                    } }
                   >
                     <RiSubtractLine className="h-4 w-4" />
                   </Button>

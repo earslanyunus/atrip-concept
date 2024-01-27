@@ -51,7 +51,7 @@ export default function ComboboxDemo({ labelText,placeholder,formaction }: { lab
     
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={open }  onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
           labelText={labelText}
