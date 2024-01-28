@@ -47,7 +47,16 @@ export default function ComboboxDemo({ labelText,placeholder,formaction }: { lab
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
   const schemaName  = labelText.toLowerCase()
- 
+  const handleSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const test = event.currentTarget;
+    console.log(test.value);
+    const data = fetch(`api/countries/${test.value}`)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data)
+    });
+    
+  };
     
 
   return (
@@ -70,7 +79,7 @@ export default function ComboboxDemo({ labelText,placeholder,formaction }: { lab
       </PopoverTrigger>
       <PopoverContent className="w-[--radix-popover-trigger-width] p-0 ">
         <Command className="">
-          <CommandInput placeholder="Search framework..." />
+          <CommandInput onKeyUp={handleSearch} placeholder="Search framework..." />
           <CommandEmpty>No framework found.</CommandEmpty>
           <CommandGroup>
             {frameworks.map((framework) => (
