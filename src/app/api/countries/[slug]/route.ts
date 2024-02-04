@@ -1,39 +1,28 @@
 import { NextResponse } from "next/server";
-import mysql  from 'mysql2/promise'
+import supabase from "@/utils/supabase";
 
 export async function GET( request: Request,
   { params }: { params: { slug: string } }){
   
   try{
-    
-    const connection = await mysql.createConnection({
-      host     : process.env.db_host,
-      user     : process.env.db_user,
-      password : process.env.db_password,
-      database:  process.env.db_database
-    
-    });
-    if(!connection) return NextResponse.json({status:500,message:'Error connecting to database'})
-    const searchName = params.slug
+    const searchText = `${params.slug}:*`
+    let { data: countries, error } = await supabase
+    .from('countries')
+    .select()
+    .textSearch('name',searchText)
 
-    const [countriesResults, countriesFields] = await connection.execute(`
-      SELECT countries.name, countries.iso2 
-      FROM countries 
-      WHERE countries.name LIKE ?`, [searchName + '%']); 
-
-    const [statesResults, statesFields] = await connection.execute(`
-      SELECT states.name, states.country_name , states.country_code
-      FROM states 
-      WHERE states.name LIKE ?`, [searchName + '%']); 
-
-    connection.end()
-
-    const results = {
-      countries: countriesResults,
-      states: statesResults
+    if (error) {
+      return NextResponse.json({status:500,message:error.message})
+      
     }
 
-    return NextResponse.json({message: results})
+    if(countries === null ||countries.length===0){
+      return NextResponse.json({status:404,message:"Country not found"})
+    }
+    return NextResponse.json({status:200,data:countries})
+    
+    
+   
 
   }
   catch(e:any){
