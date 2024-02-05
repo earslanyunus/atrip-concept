@@ -18,8 +18,6 @@ import {
 import { RiAddLine, RiSubtractLine, RiUserLine } from "@remixicon/react";
 import clsx from "clsx";
 import * as React from "react";
-import PassengerSelect from "./PassengerSelect";
-import usePersonStore from "@/store/data";
 import { Input } from "../ui/input";
 
 const cabinClasses = [

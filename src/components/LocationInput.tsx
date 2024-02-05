@@ -1,134 +1,105 @@
-"use client";
+"use client"
 
+import * as React from "react"
+import { Check, ChevronsUpDown } from "lucide-react"
+
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-} from "@/components/ui/command";
-import { Button } from "@/components/ui/button";
+} from "@/components/ui/command"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
-import { Check } from "lucide-react";
-import * as React from "react";
-import { RiMapPin2Line } from "@remixicon/react";
-import clsx from "clsx";
+} from "@/components/ui/popover"
+import { RiEarthLine, RiMapPinRangeLine } from "@remixicon/react"
 
-type Location = {
-  id: number;
-  name: string;
-  iso3: string;
-  iso2: string;
-  numeric_code: number;
-  phone_code: string;
-  capital: string;
-  currency: string;
-  currency_name: string;
-  currency_symbol: string;
-  tld: string;
-  native: string;
-  region: string;
-  region_id: number;
-  subregion: string;
-  subregion_id: number;
-  nationality: string;
-  timezones: string;
-  latitude: number;
-  longitude: number;
-  emoji: string;
-  emojiU: string;
-};
-type LocationArray = Location[];
 
-export default function ComboboxDemo({
-  labelText,
-  placeholder,
-  formaction,
-}: {
-  labelText: string;
-  placeholder: string;
-  formaction: any;
-}) {
-  const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
 
-  const [locations, setLocations] = React.useState<LocationArray>([
-   
-  ]);
-  const schemaName = labelText.toLowerCase();
-  const handleSearch = async (event: React.KeyboardEvent<HTMLInputElement>) => {
-    const test = event.currentTarget;
-    if (test.value !== "") {
-      const data = await fetch(`api/countries/${test.value}`);
-      const resp = await data.json();
-      if (typeof resp.data === 'object' && resp.data !== null) {
-        setLocations(resp.data);
-        
-      }
-    } else {
-      console.log('location sifirlandi');
+export default function ComboboxDemo() {
+  const [open, setOpen] = React.useState(false)
+  const [value, setValue] = React.useState("")
+  const [locations, setLocations] = React.useState([])
+
+  const searchHandle = async (value:string) => {
+    console.log(value.length,'search uzunluk');
+    
+    if (value.length>0) {
+      console.log(value);
+      const response = await fetch(`/api/countries/${value}`)
+      const data = await response.json()
+      setLocations(data.data)
       
-      setLocations([]);
-    }
 
-   
-  };
+    }else{
+      setLocations([])
+      setValue('Select destination...')
+    }
+  }
+  // track value
+  React.useEffect(() => {
+    console.log(value,'value deger');
+    
+  }, [value])
+  React.useEffect(()=>{
+    console.log(locations,'location deger');
+    
+  },[locations])
+
+    
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
-          labelText={labelText}
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className={clsx(
-            "w-full justify-start gap-3 py-6 text-slate-400 ",
-            value !== "" && "text-slate-700"
-          )}
+          className="w-full justify-between py-3 px-4 min-h-[46px]"
         >
-          <RiMapPin2Line className="fill-slate-500" />
-
-          <span className="text-slate-400">{value || placeholder}</span>
+          
+          {value
+            ? locations.find((location) => location.name.toLowerCase() === value)?.name||'Select destination...'
+            : "Select destination..."
+           
+            
+            }
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[--radix-popover-trigger-width] p-0 ">
-        <Command className="">
-          <CommandInput
-            onKeyUp={handleSearch}
-            placeholder="Search framework..."
-
-          />
-          <CommandEmpty>No framework found.</CommandEmpty>
+      <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+        <Command>
+          <CommandInput placeholder="Select destination..." onValueChange={searchHandle}/>
+          <CommandEmpty>No location found.</CommandEmpty>
           <CommandGroup>
             {locations.map((location) => (
               <CommandItem
-                className="cursor-pointer py-3 hover:scale-105 transition-transform ease-out"
-                key={location.iso3}
+                key={location.id}
                 value={location.name}
                 onSelect={(currentValue) => {
-                  setValue(currentValue);
-                  setOpen(false);
-                  
+                  setValue(currentValue === value ? "" : currentValue)
+                  setOpen(false)
                 }}
+                className="cursor-pointer"
               >
                 <Check
                   className={cn(
-                    "mr-2 h-4 w-4 ",
-                    value === location.name ? "opacity-100" : "opacity-0"
+                    "mr-2 h-4 w-4",
+                    value === location.name.toLowerCase() ? "opacity-100" : "opacity-0"
                   )}
                 />
-                {location.name}
+                {location?.numeric_code && <RiEarthLine className="opacity-30 mr-2"/>}
+                {location?.country_name && <RiMapPinRangeLine className="opacity-30 mr-2"/>}{location.name}
               </CommandItem>
             ))}
           </CommandGroup>
         </Command>
       </PopoverContent>
     </Popover>
-  );
+  )
 }

@@ -31,7 +31,6 @@ import {
 import PassengerInput from "./PassengerInput";
 import ComboboxDemo from "../LocationInput";
 import DatePickerDemo from "../DateInput";
-import PassengerSelect from "./PassengerSelect";
 
 const languages = [
   { label: "English", value: "en" },
@@ -90,9 +89,6 @@ export default function ComboboxForm() {
               <FormItem >
                 <FormControl>
                   <ComboboxDemo
-                    labelText="From"
-                    placeholder="Airport-City or Country"
-                    formaction={form.setValue}
                   />
                 </FormControl>
                 <FormMessage />
@@ -100,7 +96,7 @@ export default function ComboboxForm() {
             );
           }}
         />
-        <FormField
+        {/* <FormField
           control={form.control}
           name="to"
           render={({ field }) => {
@@ -117,7 +113,7 @@ export default function ComboboxForm() {
               </FormItem>
             );
           }}
-        />
+        /> */}
         <FormField
           control={form.control}
           name="date"
