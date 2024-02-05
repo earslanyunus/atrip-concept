@@ -29,8 +29,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import PassengerInput from "./PassengerInput";
-import ComboboxDemo from "./LocationInput";
-import DatePickerDemo from "./DateInput";
+import ComboboxDemo from "../LocationInput";
+import DatePickerDemo from "../DateInput";
 import PassengerSelect from "./PassengerSelect";
 
 const languages = [

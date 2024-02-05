@@ -1,5 +1,5 @@
 
-import PassengerInput from "@/components/PassengerInput"
+import PassengerInput from "@/components/plane/PassengerInput"
 import usePersonStore from "@/store/data"
 
 export default function Page(){

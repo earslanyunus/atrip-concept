@@ -6,7 +6,7 @@ import Car from "@/components/icons/Car";
 import * as Tabs from '@radix-ui/react-tabs';
 import { useState } from "react";
 import { motion } from "framer-motion";
-import PlaneForm from "./PlaneForm";
+import PlaneForm from "./plane/PlaneForm";
 
 
 
