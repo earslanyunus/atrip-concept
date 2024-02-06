@@ -10,17 +10,25 @@ export async function GET( request: Request,
     .from('countries')
     .select('name,iso3,numeric_code,id')
     .textSearch('name',searchText)
-    .limit(5)
+    .limit(3)
 
     let { data: state, error:errorState } = await supabase
     .from('states')
     .select('name,country_name,id')
     .textSearch('name',searchText)
-    .limit(5)
+    .limit(3)
 
-    if (errorCountry || errorState) {
+    let { data: airports, error:errorAirports } = await supabase
+    .from('airports')
+    .select('name,iata_code,id')
+    .textSearch('name',searchText)
+    .limit(3)
 
-      return NextResponse.json({status:500,message:errorCountry?.message || errorState?.message})
+    
+
+    if (errorCountry || errorState || errorAirports) {
+
+      return NextResponse.json({status:500,message:errorCountry?.message || errorState?.message || errorAirports?.message})
       
 
       
@@ -33,7 +41,7 @@ export async function GET( request: Request,
     // if(state === null ||state.length===0){
     //   return NextResponse.json({status:404,message:"State not found"})
     // }
-    return NextResponse.json({status:200,data:[...(countries || []), ...(state || [])]})
+    return NextResponse.json({status:200,data:[...(countries || []), ...(state || []), ...(airports || [])]})
     
     
    

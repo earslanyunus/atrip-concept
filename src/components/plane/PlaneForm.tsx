@@ -29,7 +29,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import PassengerInput from "./PassengerInput";
-import ComboboxDemo from "../LocationInput";
+import LocationInput from "../LocationInput";
 import DatePickerDemo from "../DateInput";
 
 const languages = [
@@ -88,7 +88,8 @@ export default function ComboboxForm() {
             return (
               <FormItem >
                 <FormControl>
-                  <ComboboxDemo
+                  <LocationInput
+                  labelText="From"
                   />
                 </FormControl>
                 <FormMessage />
@@ -96,24 +97,23 @@ export default function ComboboxForm() {
             );
           }}
         />
-        {/* <FormField
+        <FormField
           control={form.control}
           name="to"
           render={({ field }) => {
             return (
               <FormItem className="">
                 <FormControl>
-                  <ComboboxDemo
+                  <LocationInput
                     labelText="To"
-                    placeholder="Airport-City or Country"
-                    formaction={form.setValue}
+                    
                   />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             );
           }}
-        /> */}
+        />
         <FormField
           control={form.control}
           name="date"

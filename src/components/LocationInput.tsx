@@ -17,11 +17,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { RiEarthLine, RiMapPinRangeLine } from "@remixicon/react"
+import { RiEarthLine, RiMapPinLine, RiMapPinRangeLine, RiPlaneLine } from "@remixicon/react"
 
 
 
-export default function ComboboxDemo() {
+export default function ComboboxDemo({labelText}:{labelText:string}) {
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState("")
   const [locations, setLocations] = React.useState([])
@@ -56,25 +56,28 @@ export default function ComboboxDemo() {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
+        <div className="flex gap-1 flex-col">
+          <p className="text-slate-500">{labelText}</p>
         <Button
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full justify-between py-3 px-4 min-h-[46px]"
+          className="w-full justify-start gap-3   py-3 px-4 min-h-[46px]"
         >
-          
+          <RiMapPinLine className="fill-slate-500"/>
           {value
-            ? locations.find((location) => location.name.toLowerCase() === value)?.name||'Select destination...'
-            : "Select destination..."
+            ? locations.find((location) => location.name.toLowerCase() === value)?.name||'Select destination'
+            : "Select destination"
            
             
             }
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          <ChevronsUpDown className=" h-4 ml-auto end w-4 shrink-0 opacity-50" />
         </Button>
+        </div>
       </PopoverTrigger>
       <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
         <Command>
-          <CommandInput placeholder="Select destination..." onValueChange={searchHandle}/>
+          <CommandInput placeholder="Select destination" onValueChange={searchHandle}/>
           <CommandEmpty>No location found.</CommandEmpty>
           <CommandGroup>
             {locations.map((location) => (
@@ -94,7 +97,8 @@ export default function ComboboxDemo() {
                   )}
                 />
                 {location?.numeric_code && <RiEarthLine className="opacity-30 mr-2"/>}
-                {location?.country_name && <RiMapPinRangeLine className="opacity-30 mr-2"/>}{location.name}
+                {location?.country_name && <RiMapPinRangeLine className="opacity-30 mr-2"/>}
+                {location?.iata_code && <RiPlaneLine className="opacity-30 mr-2"/>}{location.name}
               </CommandItem>
             ))}
           </CommandGroup>
