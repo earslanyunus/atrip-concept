@@ -16,25 +16,19 @@ import { tr } from "date-fns/locale";
 import { Calendar as CalendarIcon } from "lucide-react";
 import * as React from "react";
 import { DateRange } from "react-day-picker";
-export default function DatePickerDemo({ labelText, formaction }: { labelText: string,formaction:any }) {
+import { usePlaneStore } from '@/store/plane';
+export default function DatePickerDemo({ labelText }: { labelText: string }) {
   const [tripDateRange, setDateRange] = React.useState<DateRange | undefined>(
     undefined
   );
   const [tripDate, setDate] = React.useState<Date | undefined>(undefined);
   const [checked, setChecked] = React.useState<boolean>(false);
   const [mode, setMode] = React.useState<"range" | "single">("range");
-    React.useEffect(()=>{
-    if(tripDateRange !== undefined){
-      formaction('date',tripDateRange);
-    }else if(tripDate !== undefined){
-      formaction('date',tripDate);
-    }else{
-      formaction('date',undefined);
-
-    }
+  const planeStore = usePlaneStore()
 
 
-    },[tripDateRange,tripDate,formaction])
+
+
 
 
   const checkedHandle = (isChecked: boolean) => {
@@ -47,6 +41,21 @@ export default function DatePickerDemo({ labelText, formaction }: { labelText: s
       setMode("range");
     }
   };
+  // log the date
+  React.useEffect(() => {
+
+    
+    if (tripDateRange && tripDateRange.to && tripDateRange.from) {
+      planeStore.setDate(tripDateRange)
+    }else if (tripDate) {
+      planeStore.setDate(tripDate)
+    }else{
+      planeStore.setDate("")
+    }
+    
+  }
+  , [tripDate, tripDateRange]);
+
 
   return (
     <Popover>

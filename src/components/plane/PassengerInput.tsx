@@ -19,6 +19,7 @@ import { RiAddLine, RiSubtractLine, RiUserLine } from "@remixicon/react";
 import clsx from "clsx";
 import * as React from "react";
 import { Input } from "../ui/input";
+import { usePlaneStore } from "@/store/plane";
 
 const cabinClasses = [
   {
@@ -37,27 +38,25 @@ const cabinClasses = [
 
 export default function PassengerInput({
   labelText,
-  formaction,
 }: {
   labelText: string;
-  formaction: any;
 }) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("Economy");
   const [adultCount, setAdultCount] = React.useState(1);
   const [studentCount, setStudentCount] = React.useState(0);
-  React.useEffect(() => {
-    formaction('passenger',{
-      cabin: value,
-      adult: adultCount,
-      student: studentCount,
-      child:0,
-      baby:0
+  const planestore = usePlaneStore()
 
-
+  React.useEffect(()=>{
+    planestore.setPassenger({
+      type:value,
+      adult:adultCount,
+      student:studentCount,
     })
-    
-  }, [value, formaction,adultCount,studentCount]);
+
+  },[value,adultCount,studentCount])
+
+
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -113,10 +112,9 @@ export default function PassengerInput({
                     className="px-2"
                     size="icon"
                     onClick={() =>{
-                      if (studentCount >0) {
-                        adultCount < 1 ? "" : setAdultCount(adultCount - 1)
-
-                      }
+                     
+                        adultCount >0? setAdultCount(adultCount - 1):""
+                      
                     }
                     }
                   >
@@ -154,9 +152,7 @@ export default function PassengerInput({
                     disabled={studentCount < 1 }
                     className="px-2"
                     size="icon"
-                    onClick={() =>{
-                      if(adultCount < 1 && studentCount === 1) return
-                    
+                    onClick={() =>{                    
                       studentCount < 1 ? "" : setStudentCount(studentCount - 1)
                     } }
                   >

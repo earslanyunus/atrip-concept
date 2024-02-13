@@ -1,9 +1,8 @@
 "use client"
 
+import { Check } from "lucide-react"
 import * as React from "react"
-import { Check, ChevronsUpDown } from "lucide-react"
 
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
   Command,
@@ -17,39 +16,40 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { cn } from "@/lib/utils"
 import { RiEarthLine, RiMapPinLine, RiMapPinRangeLine, RiPlaneLine } from "@remixicon/react"
+import { usePlaneStore } from "@/store/plane"
 
 
-
-export default function ComboboxDemo({labelText}:{labelText:string}) {
+export default function ComboboxDemo({labelText}:{labelText:string,}) {
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState("")
-  const [locations, setLocations] = React.useState([])
+  const [locations, setLocations] = React.useState<any>([])
+  const {setFrom,setTo} = usePlaneStore()
 
-  const searchHandle = async (value:string) => {
-    console.log(value.length,'search uzunluk');
+  const searchHandle = async (deger:string) => {
     
-    if (value.length>0) {
-      console.log(value);
-      const response = await fetch(`/api/countries/${value}`)
+    if (deger.length>0) {
+      const response = await fetch(`/api/countries/${deger}`)
       const data = await response.json()
       setLocations(data.data)
-      
+
 
     }else{
       setLocations([])
       setValue('Select destination...')
     }
   }
-  // track value
-  React.useEffect(() => {
-    console.log(value,'value deger');
-    
-  }, [value])
   React.useEffect(()=>{
-    console.log(locations,'location deger');
+    // write to store
+    if (labelText === 'From') {
+      setFrom(value)
+    }
+    if (labelText === 'To') {
+      setTo(value)
+    }
     
-  },[locations])
+  },[value])
 
     
 
@@ -62,16 +62,16 @@ export default function ComboboxDemo({labelText}:{labelText:string}) {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full justify-start gap-3   py-3 px-4 min-h-[46px]"
+          className="w-full justify-start gap-3   py-4 px-4 min-h-[50px]"
         >
           <RiMapPinLine className="fill-slate-500"/>
           {value
-            ? locations.find((location) => location.name.toLowerCase() === value)?.name||'Select destination'
+            ? locations.find((location:any) => location.name.toLowerCase() === value)?.name||'Select destination'
             : "Select destination"
            
             
             }
-          <ChevronsUpDown className=" h-4 ml-auto end w-4 shrink-0 opacity-50" />
+            
         </Button>
         </div>
       </PopoverTrigger>
@@ -80,13 +80,16 @@ export default function ComboboxDemo({labelText}:{labelText:string}) {
           <CommandInput placeholder="Select destination" onValueChange={searchHandle}/>
           <CommandEmpty>No location found.</CommandEmpty>
           <CommandGroup>
-            {locations.map((location) => (
+            {locations.map((location:any) => (
               <CommandItem
                 key={location.id}
                 value={location.name}
                 onSelect={(currentValue) => {
+                  
                   setValue(currentValue === value ? "" : currentValue)
                   setOpen(false)
+
+                  
                 }}
                 className="cursor-pointer"
               >

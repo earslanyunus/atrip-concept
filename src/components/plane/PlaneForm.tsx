@@ -1,152 +1,79 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "@/components/ui/command";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import DatePickerDemo from "./DateInput";
+import LocationInput from "./LocationInput";
 import PassengerInput from "./PassengerInput";
-import LocationInput from "../LocationInput";
-import DatePickerDemo from "../DateInput";
+import { usePlaneStore } from "@/store/plane";
+import React from "react";
 
-const languages = [
-  { label: "English", value: "en" },
-  { label: "French", value: "fr" },
-  { label: "German", value: "de" },
-  { label: "Spanish", value: "es" },
-  { label: "Portuguese", value: "pt" },
-  { label: "Russian", value: "ru" },
-  { label: "Japanese", value: "ja" },
-  { label: "Korean", value: "ko" },
-  { label: "Chinese", value: "zh" },
-] as const;
-
-const FormSchema = z.object({
-  // from have to  min 3 chracater
-  from: z.string({
-    required_error: "Please select from destination.",
-  }).min(3),
-  to: z.string({
-    required_error: "Please select to destination.",
-  }),
-  date: z.union([z.date({
-    required_error: "Please select date.",
-  }), z.object({ from: z.date(), to: z.date() })],{
-    required_error: "Please select date.",
-  }),
-  passenger: z.object({
-    cabin: z.string(),
-    adult: z.number(),
-    child: z.number(),
-    baby: z.number(),
-    student: z.number(),
-  }),
-});
 
 export default function ComboboxForm() {
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-  });
+  const {from,to,date,passenger} = usePlaneStore()
+  const [toError, setToError] = React.useState("")
+  const [fromError, setFromError] = React.useState("")
+  const [dateError, setDateError] = React.useState("")
+  const [passengerError, setPassengerError] = React.useState("")
+  const submitHandle = (  ) =>{
+    // from part
+    if (from === "") {
+      setFromError("Please select a location")
+    }else{
+      setFromError("")
+      console.log(from);
+      
+    }
+    // to part
+    if (to === "") {
+      setToError("Please select a location")
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
+    }else{
+      setToError("")
+      console.log(to);
+    }    
+    // date part
+    if (date === "") {
+      setDateError("Please select a date")
+    }else{
+
+      setDateError("")
+      console.log(date);
+    }
+    // passenger part
+    if(passenger.adult === 0 && passenger.student === 0){
+      setPassengerError("Please select a passenger")
+    }else{
+      setPassengerError("")
+      
+    }
+    
+
+    
   }
+ 
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="grid grid-cols-1 lg:grid-cols-2    gap-x-8"
-      >
-        <FormField
-          control={form.control}
-          name="from"
-          render={({ field }) => {
-            return (
-              <FormItem >
-                <FormControl>
-                  <LocationInput
-                  labelText="From"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            );
-          }}
-        />
-        <FormField
-          control={form.control}
-          name="to"
-          render={({ field }) => {
-            return (
-              <FormItem className="">
-                <FormControl>
-                  <LocationInput
-                    labelText="To"
-                    
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            );
-          }}
-        />
-        <FormField
-          control={form.control}
-          name="date"
-          render={({ field }) => {
-            return (
-              <FormItem className="">
-                <FormControl>
-                  <DatePickerDemo labelText="Date" formaction={form.setValue} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            );
-          }}
-        />
-           <FormField
-          control={form.control}
-          name="passenger"
-          render={({ field }) => {
-            return (
-              <FormItem className="">
-                <FormControl>
-                  <PassengerInput  labelText="Passenger" formaction={form.setValue} />
-                  
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            );
-          }}
-        />
-        <Button className=" mt-6 col-span-1 lg:col-span-2" type="submit">
-          Submit
-        </Button>
-      </form>
-    </Form>
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-4    gap-x-8">
+      
+ 
+        <div>
+        <LocationInput labelText="From" />
+        {fromError.length >0 && <span className="row-start-3 text-sm font-medium text-red-500">{fromError}</span>}
+        </div>
+        <div>
+        <LocationInput labelText="To" />
+        {toError.length >0 && <span className="row-start-3 text-sm font-medium text-red-500">{toError}</span>}
+        </div>
+        <div>
+        <DatePickerDemo labelText="Date" />
+        {dateError.length >0 && <span className="row-start-3 text-sm font-medium text-red-500">{dateError}</span>}
+        </div>
+        <div>
+        <PassengerInput labelText="Passenger" />
+        {passengerError.length >0 && <span className="row-start-3 text-sm font-medium text-red-500">{passengerError}</span>}
+        </div>
+
+        <Button className=" mt-6 col-span-1 lg:col-span-2" onClick={submitHandle}>Submit</Button>
+    </div>
   );
 }
